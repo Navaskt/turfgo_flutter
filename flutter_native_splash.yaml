@@ -1,0 +1,21 @@
+flutter_native_splash:
+  color: "#0A0A0A"            # match your splash image's main color
+  color_dark: "#0A0A0A"
+
+  image: assets/images/splash_img.png
+  image_dark: assets/images/splash_img.png
+
+  android: true
+  ios: true
+  web: false
+
+  android_gravity: fill
+  ios_content_mode: scaleAspectFill
+  fullscreen: true
+  
+
+  android_12:
+    color: "#0A0A0A"          # same color, not white
+    image: assets/images/splash_img.png
+    color_dark: "#0A0A0A"
+    image_dark: assets/images/splash_img.png
