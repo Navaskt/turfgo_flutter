@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'core/di/injection.dart';
+import 'core/router/app_router.dart';
 
 
 void main() async{
    final binding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: binding);
-  runApp(const MyApp());
+  await configureDependencies();
+  getIt<AppRouter>().initialize();
+  runApp(ProviderScope(child: const MyApp()));
   FlutterNativeSplash.remove();
 }
 
@@ -15,15 +21,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
+    return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFF00FF87)),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      routerConfig: getIt<AppRouter>().router,
     );
   }
-}
+  }
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
