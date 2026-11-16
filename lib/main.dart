@@ -3,7 +3,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'core/di/injection.dart';
-import 'core/router/app_router.dart';
+import 'core/navigation/app_router.dart';
 
 
 void main() async{

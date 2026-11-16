@@ -12,8 +12,11 @@
 
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
+import 'package:internet_connection_checker/internet_connection_checker.dart'
+    as _i973;
 
-import '../router/app_router.dart' as _i81;
+import '../navigation/app_router.dart' as _i630;
+import '../services/network/network_info.dart' as _i238;
 
 extension GetItInjectableX on _i174.GetIt {
   // initializes the registration of main-scope dependencies inside of GetIt
@@ -22,7 +25,10 @@ extension GetItInjectableX on _i174.GetIt {
     _i526.EnvironmentFilter? environmentFilter,
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
-    gh.singleton<_i81.AppRouter>(() => _i81.AppRouter());
+    gh.singleton<_i630.AppRouter>(() => _i630.AppRouter());
+    gh.lazySingleton<_i238.NetworkInfo>(
+      () => _i238.NetworkInfoImpl(gh<_i973.InternetConnectionChecker>()),
+    );
     return this;
   }
 }
