@@ -6,12 +6,11 @@ touch lib/app.dart
 touch lib/core/error/{failures.dart,exceptions.dart}
 touch lib/core/usecase/usecase.dart
 touch lib/core/di/injection.dart
-touch lib/core/router/app_router.dart
 mkdir -p lib/core/services/{api,local,network,remote,storage}
 mkdir -p lib/core/shared/{data/{datasources,mappers,model,repository},domain/entities,presentation/{controller,screens,widgets}}
 
 # Features
-features=("auth" "turf" "booking")
+features=("auth" "turf" "booking" "match" "payment" "ticket" "profile")
 
 for f in "${features[@]}"; do
   base="lib/features/$f"
