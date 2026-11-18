@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:turfgo_flutter/core/theme/app_theme.dart';
 
 import 'core/di/injection.dart';
 import 'core/navigation/app_router.dart';
@@ -23,9 +24,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFF00FF87)),
-      ),
+      theme: AppTheme.dark,
       routerConfig: getIt<AppRouter>().router,
     );
   }

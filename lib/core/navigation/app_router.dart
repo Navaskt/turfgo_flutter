@@ -33,10 +33,8 @@ class AppRouter {
       GoRoute(
         path: AppRouterPaths.turf,
         builder: (context, state) {
-          return Container(
-            child: Center(
-              child: Text('Turf Screen'),
-            ),
+          return Center(
+            child: Text('Turf Screen'),
           );
         },
       ),

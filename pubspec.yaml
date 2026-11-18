@@ -20,6 +20,7 @@ dependencies:
   riverpod_annotation: ^4.0.8
   get_it: ^9.3.0
   internet_connection_checker: ^3.0.1
+  google_fonts: ^9.0.0
 
 dev_dependencies:
   flutter_test:
