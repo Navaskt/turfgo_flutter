@@ -21,6 +21,8 @@ dependencies:
   get_it: ^9.3.0
   internet_connection_checker: ^3.0.1
   google_fonts: ^9.0.0
+  cupertino_ui: ^1.1.7
+  material_ui: ^1.11.1
 
 dev_dependencies:
   flutter_test:
