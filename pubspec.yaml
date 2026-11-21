@@ -25,6 +25,8 @@ dependencies:
   cupertino_ui: ^1.1.7
   material_ui: ^1.11.1
   flutter_svg: ^2.5.0
+  cached_network_image: ^4.0.7
+  flutter_screenutil_plus: ^1.6.0
 
 dev_dependencies:
   flutter_test:
@@ -43,7 +45,6 @@ flutter:
   assets:
     - assets/images/
     - assets/svg/
-    - assets/svg/flags/
     - assets/svg/icons/
 
   fonts:

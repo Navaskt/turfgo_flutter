@@ -2,7 +2,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../main.dart';
+import '../../features/explore/presentation/screens/explore_screen.dart';
 import 'app_router_paths.dart';
 
 @singleton
@@ -28,7 +28,7 @@ class AppRouter {
     return [
       GoRoute(
         path: AppRouterPaths.home,
-        builder: (context, state) => MyHomePage(title: 'Turf Screen'),
+        builder: (context, state) => const ExploreScreen(),
       ),
       GoRoute(
         path: AppRouterPaths.turf,
