@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../../../core/theme/app_colors.dart';
@@ -15,7 +16,9 @@ class TurfFilterChips extends ConsumerWidget {
     return SizedBox(
       height: 31,
       child: ListView.separated(
-        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.page),
+        padding:  EdgeInsets.symmetric(
+          horizontal: AppSpacing.pageHorizontal.w,
+        ),
         scrollDirection: Axis.horizontal,
         itemCount: filters.length,
         separatorBuilder: (_, __) => const SizedBox(width: 7),

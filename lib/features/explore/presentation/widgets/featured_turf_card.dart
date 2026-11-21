@@ -1,3 +1,4 @@
+import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../../../core/theme/app_colors.dart';
@@ -10,7 +11,9 @@ class FeaturedTurfCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: AppSpacing.page),
+      margin:  EdgeInsets.symmetric(
+        horizontal: AppSpacing.pageHorizontal.w,
+      ),
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: AppRadius.largeBorder,

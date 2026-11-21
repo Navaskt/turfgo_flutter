@@ -1,3 +1,4 @@
+import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../../../core/theme/app_colors.dart';
@@ -8,8 +9,10 @@ class MatchFinderCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: AppSpacing.page),
-      padding: const EdgeInsets.all(13),
+      margin:  EdgeInsets.symmetric(
+        horizontal: AppSpacing.pageHorizontal.w,
+      ),
+      padding: EdgeInsets.all(13.w),
       decoration: BoxDecoration(
         borderRadius: AppRadius.largeBorder,
         gradient: const LinearGradient(

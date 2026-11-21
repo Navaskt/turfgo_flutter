@@ -6,7 +6,7 @@ abstract final class AppSpacing {
   static const double sm = 8;
   static const double md = 12;
   static const double card = 14; // card inner padding
-  static const double page = 16; // screen horizontal padding
+  static const double pageHorizontal = 16; // screen horizontal padding
   static const double section = 20; // gap between sections
 }
 

@@ -1,14 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:material_ui/material_ui.dart';
 
-import '../../../../core/shared/presentation/controller/main_navigation_notifier.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_tokens.dart';
 import '../../domain/entities/arena.dart';
 import '../providers/explore_filter_provider.dart';
 import '../widgets/arena_card.dart';
-import '../widgets/explore_bottom_navigation.dart';
-import '../widgets/explore_header.dart';
+import '../widgets/explore_search.dart';
 import '../widgets/featured_turf_card.dart';
 import '../widgets/match_finder_card.dart';
 import '../widgets/pitch_surface_guide_card.dart';
@@ -59,9 +58,6 @@ class ExploreScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedFilter = ref.watch(exploreFilterProvider);
-    final currentTab = ref.watch(
-      mainNavigationProvider.select((state) => state.currentIndex),
-    );
     final arenas = selectedFilter == 'ALL TURFS'
         ? _arenas
         : _arenas
@@ -75,7 +71,7 @@ class ExploreScreen extends ConsumerWidget {
         child: CustomScrollView(
           physics: const BouncingScrollPhysics(),
           slivers: [
-            const SliverToBoxAdapter(child: ExploreHeader()),
+            const SliverToBoxAdapter(child: ExploreSearch()),
             const SliverToBoxAdapter(child: TurfFilterChips()),
             const SliverToBoxAdapter(child: SizedBox(height: 13)),
             const SliverToBoxAdapter(child: FeaturedTurfCard()),
@@ -83,11 +79,9 @@ class ExploreScreen extends ConsumerWidget {
             const SliverToBoxAdapter(child: MatchFinderCard()),
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(
-                  AppSpacing.page,
-                  20,
-                  AppSpacing.page,
-                  10,
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppSpacing.pageHorizontal.w,
+                  vertical: 10.h,
                 ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
@@ -154,8 +148,8 @@ class ExploreScreen extends ConsumerWidget {
               )
             else
               SliverPadding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppSpacing.page,
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppSpacing.pageHorizontal.w,
                 ),
                 sliver: SliverList.separated(
                   itemCount: arenas.length,
@@ -166,22 +160,15 @@ class ExploreScreen extends ConsumerWidget {
               ),
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(
-                  AppSpacing.page,
-                  15,
-                  AppSpacing.page,
-                  20,
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppSpacing.pageHorizontal.w,
+                  vertical: 15.h,
                 ),
                 child: const PitchSurfaceGuideCard(),
               ),
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: ExploreBottomNavigation(
-        currentIndex: currentTab,
-        onTap: (index) =>
-            ref.read(mainNavigationProvider.notifier).setCurrentIndex(index),
       ),
     );
   }

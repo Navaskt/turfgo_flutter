@@ -1,8 +1,8 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
+import 'package:turfgo_flutter/core/shared/presentation/screens/main_navigation_screen.dart';
 
-import '../../features/explore/presentation/screens/explore_screen.dart';
 import 'app_router_paths.dart';
 
 @singleton
@@ -28,7 +28,7 @@ class AppRouter {
     return [
       GoRoute(
         path: AppRouterPaths.home,
-        builder: (context, state) => const ExploreScreen(),
+        builder: (context, state) => const MainNavigationScreen(),
       ),
       GoRoute(
         path: AppRouterPaths.turf,
