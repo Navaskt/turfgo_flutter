@@ -1,175 +1,96 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:material_ui/material_ui.dart';
 
-import '../../../../core/theme/app_colors.dart';
-import '../../../../core/theme/app_tokens.dart';
-import '../../domain/entities/arena.dart';
-import '../providers/explore_filter_provider.dart';
-import '../widgets/arena_card.dart';
-import '../widgets/explore_search.dart';
-import '../widgets/featured_turf_card.dart';
-import '../widgets/match_finder_card.dart';
-import '../widgets/pitch_surface_guide_card.dart';
-import '../widgets/turf_filter_chips.dart';
+import '../../../../core/theme/app_dimens.dart';
+import '../../../../core/widgets/app_search_field.dart';
+import '../providers/explore_providers.dart';
+import '../widgets/explore_header.dart';
+import '../widgets/explore_sections.dart';
+import '../widgets/turf_filter_bar.dart';
 
-class ExploreScreen extends ConsumerWidget {
-  const ExploreScreen({super.key});
 
-  static const _arenas = <Arena>[
-    Arena(
-      name: 'Camp Nou Arena',
-      price: 55,
-      pitchType: 'Pitch A - Outdoor Floodlit',
-      format: '7-a-side',
-      dimensions: '45 × 25 m',
-      turf: 'AG / Turf',
-      rating: '4.9 (120)',
-      distance: '12 miles away',
-      facilities: ['Floodlights', 'Changing'],
-      indoor: false,
-    ),
-    Arena(
-      name: 'Volt Apex Grounds',
-      price: 40,
-      pitchType: 'Cage 2 - Indoor Football',
-      format: '5-a-side',
-      dimensions: '32 × 18 m',
-      turf: '7F Turf Only',
-      rating: '4.8 (92)',
-      distance: '3.6 miles away',
-      facilities: ['Scoreboard', 'Match Parking'],
-      indoor: true,
-    ),
-    Arena(
-      name: 'San Siro Urban Turf',
-      price: 65,
-      pitchType: 'Pitch B - Indoor Facility',
-      format: '7-a-side',
-      dimensions: '48 × 23 m',
-      turf: 'AG / 3G',
-      rating: '4.9 (156)',
-      distance: '5.3 miles away',
-      facilities: ['Rain Roof', 'Free Parking'],
-      indoor: true,
-    ),
-  ];
+/// Explore Arenas screen.
+///
+/// Expects to live inside a `Scaffold(extendBody: true)` (see MainShell) so the
+/// glass header and bottom nav float above the scrolling content.
+class ExplorePage extends StatelessWidget {
+  const ExplorePage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final selectedFilter = ref.watch(exploreFilterProvider);
-    final arenas = selectedFilter == 'ALL TURFS'
-        ? _arenas
-        : _arenas
-              .where((arena) => arena.format.toUpperCase() == selectedFilter)
-              .toList();
+  Widget build(BuildContext context) {
+    final insets = MediaQuery.paddingOf(context);
 
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      body: SafeArea(
-        bottom: false,
-        child: CustomScrollView(
-          physics: const BouncingScrollPhysics(),
+    return Stack(
+      children: [
+        CustomScrollView(
           slivers: [
-            const SliverToBoxAdapter(child: ExploreSearch()),
-            const SliverToBoxAdapter(child: TurfFilterChips()),
-            const SliverToBoxAdapter(child: SizedBox(height: 13)),
-            const SliverToBoxAdapter(child: FeaturedTurfCard()),
-            const SliverToBoxAdapter(child: SizedBox(height: 13)),
-            const SliverToBoxAdapter(child: MatchFinderCard()),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: AppSpacing.pageHorizontal.w,
-                  vertical: 10.h,
-                ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    const Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Featured Arenas',
-                            style: TextStyle(
-                              fontSize: 19,
-                              color: AppColors.textPrimary,
-                              fontWeight: FontWeight.w900,
-                              letterSpacing: -.35,
-                            ),
-                          ),
-                          SizedBox(height: 3),
-                          Text(
-                            'Top local arenas, ratings & verified availability',
-                            style: TextStyle(
-                              fontSize: 9,
-                              color: AppColors.textSecondary,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const Text(
-                      'MAP\nVIEW',
-                      textAlign: TextAlign.right,
-                      style: TextStyle(
-                        fontSize: 8,
-                        height: 1.2,
-                        color: AppColors.primary,
-                        fontWeight: FontWeight.w900,
-                        letterSpacing: .5,
-                      ),
-                    ),
-                    const SizedBox(width: 4),
-                    const Icon(
-                      Icons.map_outlined,
-                      color: AppColors.primary,
-                      size: 15,
-                    ),
-                  ],
-                ),
+            SliverToBoxAdapter(child: SizedBox(height: insets.top + ExploreHeader.height)),
+            const SliverToBoxAdapter(child: _SearchAndFilters()),
+            SliverPadding(
+              padding: const EdgeInsets.fromLTRB(
+                AppSpacing.page,
+                AppSpacing.section,
+                AppSpacing.page,
+                0,
+              ),
+              sliver: SliverList.list(
+                children: const [
+                  PrimeTimeSection(),
+                  SizedBox(height: AppSpacing.section),
+                  MatchFinderSection(),
+                  SizedBox(height: AppSpacing.section),
+                  FeaturedArenasHeader(),
+                  SizedBox(height: AppSpacing.card),
+                ],
               ),
             ),
-            if (arenas.isEmpty)
-              const SliverToBoxAdapter(
-                child: Padding(
-                  padding: EdgeInsets.all(24),
-                  child: Center(
-                    child: Text(
-                      'No arenas found for this format.',
-                      style: TextStyle(
-                        color: AppColors.textSecondary,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ),
-                ),
-              )
-            else
-              SliverPadding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: AppSpacing.pageHorizontal.w,
-                ),
-                sliver: SliverList.separated(
-                  itemCount: arenas.length,
-                  separatorBuilder: (_, __) => const SizedBox(height: 13),
-                  itemBuilder: (context, index) =>
-                      ArenaCard(arena: arenas[index]),
-                ),
+            const SliverPadding(
+              padding: EdgeInsets.symmetric(horizontal: AppSpacing.page),
+              sliver: FeaturedArenasSliver(),
+            ),
+            SliverPadding(
+              // insets.bottom already includes the bottom nav (extendBody).
+              padding: EdgeInsets.fromLTRB(
+                AppSpacing.page,
+                AppSpacing.section,
+                AppSpacing.page,
+                insets.bottom + AppSpacing.lg,
               ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: AppSpacing.pageHorizontal.w,
-                  vertical: 15.h,
+              sliver: SliverToBoxAdapter(
+                child: SurfaceGuideTile(
+                  onTap: () {
+                    // TODO(navigation): show surface guide bottom sheet
+                  },
                 ),
-                child: const PitchSurfaceGuideCard(),
               ),
             ),
           ],
         ),
-      ),
+        const Positioned(top: 0, left: 0, right: 0, child: ExploreHeader()),
+      ],
+    );
+  }
+}
+
+class _SearchAndFilters extends ConsumerWidget {
+  const _SearchAndFilters();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(AppSpacing.page, AppSpacing.xs, AppSpacing.page, 0),
+          child: AppSearchField(
+            hint: 'Search arenas, postcodes, or cages...',
+            onChanged: ref.read(searchQueryProvider.notifier).update,
+            onFilterTap: () {
+              // TODO(navigation): open filter sheet
+            },
+          ),
+        ),
+        const TurfFilterBar(),
+      ],
     );
   }
 }

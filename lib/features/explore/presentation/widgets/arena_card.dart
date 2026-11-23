@@ -1,210 +1,81 @@
+
+
 import 'package:material_ui/material_ui.dart';
 
 import '../../../../core/theme/app_colors.dart';
-import '../../../../core/theme/app_tokens.dart';
+import '../../../../core/theme/app_dimens.dart';
+import '../../../../core/theme/app_gradients.dart';
+import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/utils/app_formatters.dart';
+import '../../../../core/widgets/app_card.dart';
+import '../../../../core/widgets/app_image.dart';
+import '../../../../core/widgets/glass_container.dart';
+import '../../../../core/widgets/glass_icon_button.dart';
+import '../../../../core/widgets/icon_label.dart';
+import '../../../../core/widgets/neon_button.dart';
+import '../../../../core/widgets/price_tag.dart';
+import '../../../../core/widgets/specs_grid.dart';
 import '../../domain/entities/arena.dart';
-import 'pitch_artwork.dart';
+import '../mappers/arena_ui.dart';
 
+/// Featured arena: photo with badges, price, specs and a reserve button.
+/// Stateless on purpose: bookmark state and actions are passed in.
 class ArenaCard extends StatelessWidget {
-  const ArenaCard({super.key, required this.arena});
+  const ArenaCard({
+    super.key,
+    required this.arena,
+    required this.isBookmarked,
+    required this.onBookmarkTap,
+    required this.onReserve,
+    this.onTap,
+  });
+
   final Arena arena;
+  final bool isBookmarked;
+  final VoidCallback onBookmarkTap;
+  final VoidCallback onReserve;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: AppRadius.largeBorder,
-        boxShadow: AppShadows.card,
-      ),
-      clipBehavior: Clip.antiAlias,
+    return AppCard(
+      onTap: onTap,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Stack(
-            children: [
-              PitchArtwork(height: 132, indoor: arena.indoor),
-              Positioned(
-                left: 9,
-                top: 8,
-                child: _Tag(
-                  label: arena.tag,
-                  color: AppColors.success,
-                  textColor: AppColors.onSuccess,
-                ),
-              ),
-              Positioned(
-                left: 9,
-                bottom: 8,
-                child: const _Tag(
-                  label: 'PITCH QUALITY: PRO',
-                  color: Color(0xCC0A0F0D),
-                  textColor: AppColors.primary,
-                ),
-              ),
-              Positioned(
-                right: 9,
-                top: 7,
-                child: IconButton(
-                  onPressed: () {},
-                  visualDensity: VisualDensity.compact,
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints.tightFor(
-                    width: 28,
-                    height: 28,
-                  ),
-                  icon: const Icon(
-                    Icons.bookmark_border,
-                    size: 17,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-              Positioned(
-                right: 9,
-                bottom: 8,
-                child: const _Tag(
-                  label: 'VERIFIED',
-                  color: Color(0xCC0A0F0D),
-                  textColor: AppColors.textPrimary,
-                ),
-              ),
-            ],
-          ),
+          _ImageHeader(arena: arena, isBookmarked: isBookmarked, onBookmarkTap: onBookmarkTap),
           Padding(
-            padding: const EdgeInsets.fromLTRB(11, 9, 11, 11),
+            padding: const EdgeInsets.all(AppSpacing.card),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Row(
-                  children: [
-                    const Icon(Icons.star, color: AppColors.warning, size: 11),
-                    const SizedBox(width: 3),
-                    Text(
-                      arena.rating,
-                      style: const TextStyle(
-                        fontSize: 8,
-                        color: AppColors.textPrimary,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    const Icon(
-                      Icons.near_me,
-                      color: AppColors.textSecondary,
-                      size: 10,
-                    ),
-                    const SizedBox(width: 3),
-                    Text(
-                      arena.distance,
-                      style: const TextStyle(
-                        fontSize: 8,
-                        color: AppColors.textSecondary,
-                      ),
-                    ),
+                _TitleRow(arena: arena),
+                const SizedBox(height: AppSpacing.md),
+                SpecsGrid(
+                  items: [
+                    SpecItem('Format', arena.format),
+                    SpecItem('Dimensions', arena.dimensions),
+                    SpecItem('Stud type', arena.studType),
                   ],
                 ),
-                const SizedBox(height: 6),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        arena.name,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          height: 1.15,
-                          color: AppColors.textPrimary,
-                          fontWeight: FontWeight.w800,
+                const SizedBox(height: AppSpacing.md),
+                Padding(
+                  padding: const EdgeInsets.only(top: AppSpacing.xs),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Wrap(
+                          spacing: AppSpacing.sm,
+                          runSpacing: AppSpacing.xs,
+                          children: [
+                            for (final a in arena.amenities) IconLabel(icon: a.icon, label: a.label),
+                          ],
                         ),
                       ),
-                    ),
-                    Text(
-                      '₹${arena.price}',
-                      style: const TextStyle(
-                        fontSize: 15,
-                        color: AppColors.primary,
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
-                    const Text(
-                      '/hr',
-                      style: TextStyle(
-                        fontSize: 8,
-                        color: AppColors.textSecondary,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  '${arena.pitchType}  •  ${arena.indoor ? 'Indoor' : 'Outdoor'} Facility',
-                  style: const TextStyle(
-                    fontSize: 8,
-                    color: AppColors.successText,
-                    fontWeight: FontWeight.w600,
+                      const SizedBox(width: AppSpacing.sm),
+                      NeonButton(label: 'Reserve', onPressed: onReserve),
+                    ],
                   ),
-                ),
-                const SizedBox(height: 9),
-                Row(
-                  children: [
-                    Expanded(
-                      child: _Specification(
-                        label: 'FORMAT',
-                        value: arena.format,
-                      ),
-                    ),
-                    const SizedBox(width: 5),
-                    Expanded(
-                      child: _Specification(
-                        label: 'DIMENSIONS',
-                        value: arena.dimensions,
-                      ),
-                    ),
-                    const SizedBox(width: 5),
-                    Expanded(
-                      child: _Specification(
-                        label: 'STUD TYPE',
-                        value: arena.turf,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 9),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Wrap(
-                        spacing: 8,
-                        runSpacing: 4,
-                        children: arena.facilities
-                            .map((facility) => _Facility(label: facility))
-                            .toList(),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    SizedBox(
-                      height: 29,
-                      child: FilledButton(
-                        onPressed: () {},
-                        style: FilledButton.styleFrom(
-                          minimumSize: const Size(76, 29),
-                          padding: const EdgeInsets.symmetric(horizontal: 12),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: AppRadius.smallBorder,
-                          ),
-                        ),
-                        child: const Text(
-                          'RESERVE',
-                          style: TextStyle(
-                            fontSize: 8,
-                            fontWeight: FontWeight.w900,
-                            letterSpacing: .3,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
                 ),
               ],
             ),
@@ -215,93 +86,115 @@ class ArenaCard extends StatelessWidget {
   }
 }
 
-class _Tag extends StatelessWidget {
-  const _Tag({
-    required this.label,
-    required this.color,
-    required this.textColor,
+class _ImageHeader extends StatelessWidget {
+  const _ImageHeader({
+    required this.arena,
+    required this.isBookmarked,
+    required this.onBookmarkTap,
   });
-  final String label;
-  final Color color;
-  final Color textColor;
+
+  final Arena arena;
+  final bool isBookmarked;
+  final VoidCallback onBookmarkTap;
+
   @override
-  Widget build(BuildContext context) => Container(
-    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-    decoration: BoxDecoration(
-      color: color,
-      borderRadius: AppRadius.badgeBorder,
-    ),
-    child: Text(
-      label,
-      style: TextStyle(
-        fontSize: 7,
-        color: textColor,
-        fontWeight: FontWeight.w900,
-        letterSpacing: .35,
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 160,
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          AppImage(arena.imageUrl),
+          const DecoratedBox(decoration: BoxDecoration(gradient: AppGradients.arenaScrim)),
+          Positioned(
+            top: 10,
+            left: 10,
+            child: Wrap(
+              spacing: 6,
+              children: [for (final tag in arena.tags) tag.toBadge()],
+            ),
+          ),
+          // 44 px hit area, 32 px visible circle at 10 px from the corner.
+          Positioned(
+            top: 4,
+            right: 4,
+            child: GlassIconButton(
+              icon: Icons.bookmark_border_rounded,
+              activeIcon: Icons.bookmark_rounded,
+              isActive: isBookmarked,
+              semanticLabel: isBookmarked ? 'Remove bookmark' : 'Bookmark ${arena.name}',
+              onPressed: onBookmarkTap,
+            ),
+          ),
+          Positioned(
+            left: AppSpacing.md,
+            bottom: 10,
+            child: Row(
+              children: [
+                GlassChip(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(Icons.star_rounded, size: 11, color: AppColors.warning),
+                      const SizedBox(width: 3),
+                      Text(
+                        arena.rating.toStringAsFixed(1),
+                        style: AppTextStyles.value.copyWith(fontSize: 10),
+                      ),
+                      const SizedBox(width: 3),
+                      Text(
+                        '(${arena.reviewCount})',
+                        style: AppTextStyles.body.copyWith(
+                          fontSize: 10,
+                          color: AppColors.textSecondarySoft,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 6),
+                GlassChip(
+                  child: Text(
+                    AppFormatters.milesAway(arena.distanceMiles),
+                    style: AppTextStyles.body.copyWith(fontSize: 10, color: AppColors.textOnChip),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
-    ),
-  );
+    );
+  }
 }
 
-class _Specification extends StatelessWidget {
-  const _Specification({required this.label, required this.value});
-  final String label;
-  final String value;
+class _TitleRow extends StatelessWidget {
+  const _TitleRow({required this.arena});
+
+  final Arena arena;
+
   @override
-  Widget build(BuildContext context) => Container(
-    constraints: const BoxConstraints(minHeight: 43),
-    padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
-    decoration: BoxDecoration(
-      color: AppColors.surfaceHigh,
-      borderRadius: AppRadius.smallBorder,
-    ),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: const TextStyle(
-            fontSize: 6,
-            color: AppColors.textSecondary,
-            fontWeight: FontWeight.w800,
-            letterSpacing: .3,
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(arena.name, maxLines: 1, overflow: TextOverflow.ellipsis, style: AppTextStyles.title),
+              Text(
+                arena.subtitle,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: AppTextStyles.body.copyWith(color: AppColors.accent),
+              ),
+            ],
           ),
         ),
-        const SizedBox(height: 4),
-        Text(
-          value,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: const TextStyle(
-            fontSize: 8,
-            color: AppColors.textPrimary,
-            fontWeight: FontWeight.w800,
-          ),
-        ),
+        const SizedBox(width: AppSpacing.sm),
+        PriceTag(amount: arena.pricePerHour),
       ],
-    ),
-  );
-}
-
-class _Facility extends StatelessWidget {
-  const _Facility({required this.label});
-  final String label;
-  @override
-  Widget build(BuildContext context) => Row(
-    mainAxisSize: MainAxisSize.min,
-    children: [
-      const Icon(
-        Icons.check_circle_outline,
-        size: 9,
-        color: AppColors.successText,
-      ),
-      const SizedBox(width: 3),
-      Text(
-        label,
-        style: const TextStyle(fontSize: 7, color: AppColors.textSecondary),
-      ),
-    ],
-  );
+    );
+  }
 }

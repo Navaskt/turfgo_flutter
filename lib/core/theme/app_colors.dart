@@ -1,40 +1,44 @@
-import 'package:material_ui/material_ui.dart';
+import 'package:flutter/material.dart';
 
-/// Colors extracted from the TurfGo Figma file (Explore Arenas screen).
+/// Colour tokens extracted from the Figma "Explore Arenas" frame.
 abstract final class AppColors {
-  // Surfaces (dark, stepped)
-  static const background = Color(0xFF0F1412); // screen bg
-  static const surfaceLow = Color(0xFF181D1A); // info rows / modal triggers
-  static const surface = Color(0xFF1C211E); // cards
-  static const surfaceHigh = Color(0xFF262B29); // search, chips, spec grid
-  static const surfaceHighest = Color(0xFF313633); // active slot pill, avatar ring
-  static const overlayDark = Color(0xFF0A0F0D); // glass badges / nav base
+  // Surfaces
+  static const background = Color(0xFF0F1412);
+  static const surface = Color(0xFF1C211E);
+  static const surfaceAlt = Color(0xFF181D1A);
+  static const surfaceHigh = Color(0xFF262B29);
+  static const surfaceHighest = Color(0xFF313633);
 
   // Brand
-  static const primary = Color(0xFF00FF87); // neon green (CTA, price)
-  static const onPrimary = Color(0xFF007138); // text on CTA
-  static const accent = Color(0xFF41F978); // links, live dot, JOIN button
+  static const primary = Color(0xFF00FF87);
+  static const accent = Color(0xFF41F978);
+  static const green = Color(0xFF00DB5F);
+  static const onPrimary = Color(0xFF007138);
   static const onAccent = Color(0xFF003913);
-  static const success = Color(0xFF00DB5F); // status dot, FAST BOOKING badge
-  static const onSuccess = Color(0xFF005A23);
-  static const successText = Color(0xFF00E478); // tag text on dark chip
-  static const warning = Color(0xFFFFB94E); // "2 slots left" urgency
-  static const error = Color(0xFFFFB4AB); // not in design, Material default
+  static const onGreen = Color(0xFF005A23);
 
   // Text
   static const textPrimary = Color(0xFFF1FFEF);
   static const textSecondary = Color(0xFFB9CBB9);
-  static const textTertiary = Color(0xFFDFE4E0); // location pill text
+  static const textOnChip = Color(0xFFDFE4E0);
+  static const textHint = Color(0x99B9CBB9);
+  static const textSecondarySoft = Color(0xCCB9CBB9);
+  static const textSecondaryStrong = Color(0xE6B9CBB9);
+  static const disabled = Color(0x80849585);
+  static const disabledSoft = Color(0x66849585);
 
-  // Lines
-  static const outline = Color(0xFF849585);
-  static const outlineVariant = Color(0xFF3B4B3D);
+  // Status
+  static const warning = Color(0xFFFFB94E);
 
-  // Translucent variants used in the design
-  static const hint = Color(0x99B9CBB9); // 60% search placeholder
-  static const disabledText = Color(0x80849585); // 50% "filled" slot
-  static const glassHeader = Color(0xCC0F1412); // 80% header
-  static const glassNav = Color(0xD90A0F0D); // 85% bottom nav
-  static const glassBadge = Color(0xD90A0F0D); // 85% overlay chips on images
-  static const dividerSoft = Color(0x4D3B4B3D); // 30%
+  // Translucent layers
+  static const overlay70 = Color(0xB30A0F0D);
+  static const overlay80 = Color(0xCC0A0F0D);
+  static const overlay85 = Color(0xD90A0F0D);
+  static const overlay90 = Color(0xE60A0F0D);
+  static const headerGlass = Color(0xCC0F1412);
+  static const greenBadge = Color(0xE600DB5F);
+  static const surfaceHighestGlass = Color(0xE6313633);
+  static const surfaceAlt50 = Color(0x80181D1A);
+  static const greenTint20 = Color(0x3300DB5F);
+  static const outlineSoft = Color(0x4D3B4B3D);
 }
