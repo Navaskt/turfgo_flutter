@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_dimens.dart';
@@ -91,7 +91,7 @@ class FeaturedArenasSliver extends ConsumerWidget {
         }
         return SliverList.separated(
           itemCount: arenas.length,
-          separatorBuilder: (_, __) => const SizedBox(height: AppSpacing.card),
+          separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.card),
           itemBuilder: (_, i) => RepaintBoundary(child: _ArenaItem(arena: arenas[i])),
         );
       },

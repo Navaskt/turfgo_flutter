@@ -23,7 +23,7 @@ class AppImage extends StatelessWidget {
     final src = source;
     if (src == null || src.isEmpty) return const _ImagePlaceholder();
 
-    Widget error(BuildContext _, Object __, StackTrace? ___) => const _ImagePlaceholder();
+    Widget error(BuildContext _, Object _, StackTrace? _) => const _ImagePlaceholder();
 
     if (src.startsWith('http')) {
       return Image.network(

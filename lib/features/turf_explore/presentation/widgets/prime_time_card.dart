@@ -170,7 +170,7 @@ class _SlotList extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(vertical: 2),
         itemCount: slots.length,
-        separatorBuilder: (_, __) => const SizedBox(width: AppSpacing.sm),
+        separatorBuilder: (_, _) => const SizedBox(width: AppSpacing.sm),
         itemBuilder: (_, i) => SlotPill(
           slot: slots[i],
           isSelected: slots[i].id == activeId,

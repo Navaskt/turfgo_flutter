@@ -30,7 +30,7 @@ class AsyncValueView<T> extends StatelessWidget {
       skipLoadingOnReload: true,
       data: data,
       loading: () => _LoadingBox(height: loadingHeight),
-      error: (_, __) => _ErrorBox(onRetry: onRetry),
+      error: (_, _) => _ErrorBox(onRetry: onRetry),
     );
   }
 }
@@ -56,7 +56,7 @@ class AsyncSliverView<T> extends StatelessWidget {
       skipLoadingOnReload: true,
       data: data,
       loading: () => SliverToBoxAdapter(child: _LoadingBox(height: loadingHeight)),
-      error: (_, __) => SliverToBoxAdapter(child: _ErrorBox(onRetry: onRetry)),
+      error: (_, _) => SliverToBoxAdapter(child: _ErrorBox(onRetry: onRetry)),
     );
   }
 }

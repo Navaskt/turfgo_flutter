@@ -24,7 +24,7 @@ class TurfFilterBar extends ConsumerWidget {
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.fromLTRB(AppSpacing.page, 12, AppSpacing.page, 4),
         itemCount: _filters.length,
-        separatorBuilder: (_, __) => const SizedBox(width: AppSpacing.sm),
+        separatorBuilder: (_, _) => const SizedBox(width: AppSpacing.sm),
         itemBuilder: (_, i) {
           final filter = _filters[i];
           return AppChoiceChip(
